@@ -1,3 +1,4 @@
+import css from 'App.module.css'
 import { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar.jsx';
 // import { Button } from './Button/Button.jsx';
@@ -29,7 +30,7 @@ export class App extends Component {
       console.log(this.props);
       if (elements.length === 0) {
         alert(
-          "Sorry, we can't find anyting for your request. Please, enter another request"
+          "Sorry, we can't find anything for your request. Please try again"
         );
       }
     } catch (error) {
@@ -69,7 +70,7 @@ export class App extends Component {
   render() {
     const { images } = this.state;
     return (
-      <div>
+      <div className={css.app}>
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={images} />
         {/* 

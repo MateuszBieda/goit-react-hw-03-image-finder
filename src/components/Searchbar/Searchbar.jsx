@@ -6,17 +6,14 @@ export class Searchbar extends Component {
     query: '',
   };
 
-  handleInput = inputName => e => {
-    this.setState({
-      [inputName]: e.target.value,
-    });
+  handleInput = e => {
+    this.setState({ query: e.currentTarget.value.toLowerCase() });
   };
 
-  handleSubmit = event => {
+  handleSubmit = e => {
     const { query } = this.state;
-    event.preventDefault();
-    this.props.onSubmit({ query });
-    console.log(query);
+    e.preventDefault();
+    this.props.onSubmit(query);
     this.reset();
   };
 
@@ -40,7 +37,7 @@ export class Searchbar extends Component {
             placeholder="Search images and photos"
             name="query"
             value={this.state.query}
-            onChange={this.handleInput('query')}
+            onChange={this.handleInput}
           />
         </form>
       </header>
