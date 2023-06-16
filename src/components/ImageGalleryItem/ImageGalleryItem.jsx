@@ -1,18 +1,22 @@
-import { Component } from 'react';
+
+import PropTypes from 'prop-types';
 import css from './ImageGalleryItem.module.css';
 
-export class ImageGalleryItem extends Component {
-  state = {
-    id: '',
-    webformatURL: '',
-    largeImageURL: '',
-  };
+export const ImageGalleryItem = ({images }) => {
+  const { webformatURL, id } = images;
+  return (
+    <li className={css.image}>
+      <img src={webformatURL} alt={id} />
+    </li>
+  );
+};
 
-  render() {
-    return (
-      <li className={css.image}>
-        <img src="" alt="" />
-      </li>
-    );
-  }
-}
+
+ImageGalleryItem.propTypes = {
+  images: PropTypes.shape({
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
+  }),
+
+};
