@@ -2,21 +2,21 @@
 import PropTypes from 'prop-types';
 import css from './ImageGalleryItem.module.css';
 
-export const ImageGalleryItem = ({images }) => {
-  const { webformatURL, id } = images;
+export const ImageGalleryItem = ({image,onClick }) => {
+  const { webformatURL, tag,largeImageURL } = image;
   return (
     <li className={css.ImageGalleryItem} >
-      <img src={webformatURL} alt={id} className={css.image}/>
+      <img src={webformatURL} alt={tag} onClick={() => onClick(largeImageURL)} className={css.image}/>
     </li>
   );
 };
 
 
 ImageGalleryItem.propTypes = {
-  images: PropTypes.shape({
+  image: PropTypes.shape({
     webformatURL: PropTypes.string.isRequired,
     largeImageURL: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
+    tag: PropTypes.string.isRequired,
   }),
-
+  onClick: PropTypes.func.isRequired,
 };

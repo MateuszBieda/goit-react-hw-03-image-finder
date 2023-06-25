@@ -7,25 +7,13 @@ export const fetchImages = async (query, page) => {
   const response = axios.get(
     `?q=${query}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
   );
+
   const elements = (await response).data.hits.map(element => {
     const { id, largeImageURL, webformatURL, tags } = element;
     return { id, largeImageURL, webformatURL, tags };
   });
   return elements;
 };
-
-
-
-fetchImages.propTypes = {
-  query: PropTypes.string.isRequired,
-  page: PropTypes.number.isRequired,
-};
-
-
-
-
-
-//export default fetchImages;
 
 // export const fetchImages = async (query, page) => {
 
@@ -35,4 +23,7 @@ fetchImages.propTypes = {
 //   return response;
 // };
 
-// export default fetchImages;
+fetchImages.propTypes = {
+  query: PropTypes.string.isRequired,
+  page: PropTypes.number.isRequired,
+};

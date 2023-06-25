@@ -1,19 +1,46 @@
-import css from 'App.module.css'
+import css from 'App.module.css';
 import { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar.jsx';
-// import { Button } from './Button/Button.jsx';
+import { Button } from './Button/Button.jsx';
 import { ImageGallery } from './ImageGallery/ImageGallery.jsx';
 import { fetchImages } from 'services/api.js';
+import { Loader } from './Loader/Loader.jsx';
+//import { Rings } from 'react-loader-spinner';
 
 // import { Loader } from './Loader/Loader.jsx';
-// import { Modal } from './Modal/Modal.jsx';
+import { Modal } from './Modal/Modal.jsx';
 
 export class App extends Component {
   state = {
     query: '',
     images: [],
     page: 1,
+    currentLargeImageURL: '',
+    error: null,
     isLoading: false,
+    showModal: false,
+  };
+
+  onOpenModalWithLargeImage = url => {
+    this.setState({ showModal: true, currentLargeImageURL: url });
+  };
+
+  onModalClose = e => {
+    if (e.currentTarget === e.target) {
+      this.setState({ showModal: false });
+    }
+  };
+
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
+
+  handleKeyDown = e => {
+    if (e.key === 'Escape') {
+      this.setState({ showModal: false });
+    }
   };
 
   addFetchedImages = async (query, page) => {
@@ -64,20 +91,35 @@ export class App extends Component {
   //     });
 
   handleFormSubmit = query => {
-    this.setState({ query: query, page: 1, images: [] });
+    if (query.trim().length === 0) {
+      alert('Please, enter request');
+      return;
+    }
+    this.setState({ query, page: 1, images: [] });
   };
 
   render() {
-    const { images } = this.state;
+    const { images, isLoading, currentLargeImageURL, error } = this.state;
     return (
       <div className={css.app}>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={images} />
-        {/* 
-     
-      <Modal/>
-      <Button/>
-      <Loader/> */}
+        {isLoading && <Loader />}
+        {error && <p>{error}</p>}
+        {images.length > 0 && (
+          <ImageGallery
+            images={images}
+            onClick={this.onOpenModalWithLargeImage}
+          />
+        )}
+
+        {images.length > 0 && <Button onClick={this.handleLoadMore} />}
+        {this.state.showModal && (
+          <Modal
+            onBackdrop={this.onModalClose}
+            url={currentLargeImageURL}
+            onKeyDown={this.handleKeyDown}
+          />
+        )}
       </div>
     );
   }
