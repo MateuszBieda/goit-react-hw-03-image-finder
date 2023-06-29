@@ -16,7 +16,7 @@ ImageGalleryItem.propTypes = {
   image: PropTypes.shape({
     webformatURL: PropTypes.string.isRequired,
     largeImageURL: PropTypes.string.isRequired,
-    tag: PropTypes.string.isRequired,
+    tag: PropTypes.string,
   }),
   onClick: PropTypes.func.isRequired,
 };

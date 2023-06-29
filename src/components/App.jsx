@@ -26,9 +26,9 @@ export class App extends Component {
   };
 
   onModalClose = e => {
-    if (e.currentTarget === e.target) {
-      this.setState({ showModal: false });
-    }
+    this.setState(({ showModal }) => ({
+      showModal: false,
+    }));
   };
 
   handleLoadMore = () => {
@@ -39,6 +39,12 @@ export class App extends Component {
 
   handleKeyDown = e => {
     if (e.key === 'Escape') {
+      this.setState({ showModal: false });
+    }
+  };
+
+  handleBackdrop = e => {
+    if (e.target === e.currentTarget) {
       this.setState({ showModal: false });
     }
   };
@@ -100,6 +106,7 @@ export class App extends Component {
 
   render() {
     const { images, isLoading, currentLargeImageURL, error } = this.state;
+    const {onModalClose}=this;
     return (
       <div className={css.app}>
         <Searchbar onSubmit={this.handleFormSubmit} />
@@ -115,7 +122,7 @@ export class App extends Component {
         {images.length > 0 && <Button onClick={this.handleLoadMore} />}
         {this.state.showModal && (
           <Modal
-            onBackdrop={this.onModalClose}
+          onModalClose={onModalClose}
             url={currentLargeImageURL}
             onKeyDown={this.handleKeyDown}
           />

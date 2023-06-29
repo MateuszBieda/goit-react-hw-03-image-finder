@@ -3,7 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import css from './Modal.module.css';
 
+
+
+
 export class Modal extends Component {
+
+  static propTypes = {
+    onModalClose: PropTypes.func.isRequired,
+  };
   componentDidMount() {
     window.addEventListener('keydown', this.props.onKeyDown);
   }
@@ -11,12 +18,22 @@ export class Modal extends Component {
     window.removeEventListener('keydown', this.props.onKeyDown);
   }
 
+  handleBackdrop = e => {
+    if (e.target === e.currentTarget) {
+      this.props.onModalClose();
+    }
+  };
+
+
+
+
   render() {
-    const { closeModal, url, tag } = this.props;
+    const {  url, tag } = this.props;
+    const {handleBackdrop} = this;
 
     return (
-      <div className={css.overlay} onClick={closeModal}>
-        <div>
+      <div className={css.overlay} onClick={handleBackdrop}>
+        <div >
           <img src={url} alt={tag} className={css.modal} />
         </div>
       </div>
@@ -26,5 +43,6 @@ export class Modal extends Component {
 
 Modal.propTypes = {
   onKeyDown: PropTypes.func.isRequired,
-  closeModal: PropTypes.func.isRequired,
+  onModalClose: PropTypes.func.isRequired,
 };
+
